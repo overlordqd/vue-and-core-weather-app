@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,16 @@ namespace weatherappapi
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
+            services.AddCors(options =>
+            {
+                options.AddPolicy("corspolicy",
+                builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials());
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
             services.Configure<AppSettings>(Configuration);
@@ -50,7 +60,8 @@ namespace weatherappapi
             }
 
             // app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseCors("corspolicy");
+            app.UseMvc();            
         }
     }
 }
