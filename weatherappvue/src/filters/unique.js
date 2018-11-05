@@ -1,6 +1,9 @@
 import Vue from 'vue';
 
 Vue.filter('unique', function(arr, key) {
+    if (arr == null) {
+            return [];
+          }
     var output = []
     var usedKeys = {}
     for (var i = 0; i < arr.length; i++) {

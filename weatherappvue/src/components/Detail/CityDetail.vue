@@ -1,15 +1,14 @@
 <template>
-    <div class="col-sm-4 col-sm-offset-2" v-show="this.loading < 2">
+    <div v-show="this.loading < 2">
         <h4>Current weather for <span v-text="city.city"></span></h4>
         <label for="currentTemp">Current temperature: </label>
-        <p v-text="$options.filters.celsius(currentTemp)"></p>
+        <p>{{currentTemp.tempC | celsius}}</p>
 
         <div v-show="forecast && forecast.length" class="com-sm-offset-3" >
             <label>5 days forecast</label>
             <ul>
                 <li v-for="f in forecast" v-bind:key="f.minTemperature">
-                    temp min: {{f.minTempC | celsius}}
-                    temp max: {{f.maxTempC | celsius}}
+                    {{f.dateTimeIso | moment("dddd, MMMM Do YYYY")}} {{f.maxTempC | celsius}} / {{f.minTempC | celsius}}
                 </li>
             </ul>
         </div>
@@ -18,18 +17,17 @@
 
 <script>
 import { HTTP } from "../../http-common";
+
 export default {
   name: "CityDetail",
   props: ["city"],
-  filters: {
-    celsius: function(value) {
-      if (!value) return "";
-      return value.toString() + " °C";
-    }
-  },
   watch: {
     city() {
       var app = this;
+      if(!app.city.id)
+      {
+        return;
+      }
       app.loading = 2;
       HTTP.get("/weather/forecast?city=" + app.city.city + ",de")
         .then(response => {
@@ -37,27 +35,24 @@ export default {
           app.loading--;
         })
         .catch(e => {
-            app.loading--;
+          app.loading--;
           console.log(e);
         });
-        HTTP.get("/weather/current?city=" + app.city.city + ",de")
+      HTTP.get("/weather/current?city=" + app.city.city + ",de")
         .then(response => {
-          app.currentTemp = response.data.tempC;
+          app.currentTemp = response.data;
           app.loading--;
         })
         .catch(e => {
-            app.loading--;
+          app.loading--;
           console.log(e);
         });
     }
   },
   data() {
     return {
-      cityName: "",
-      zipCode: "",
-      currentTemp: 0,
+      currentTemp: {},
       forecast: [],
-      moisture: 0,
       loading: 0
     };
   }
