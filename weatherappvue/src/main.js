@@ -4,12 +4,14 @@ import BootstrapVue from 'bootstrap-vue'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 import router from 'vue-router'
+import vueDebounce from 'vue-debounce'
 import "./filters/unique";
 import "./filters/celsius";
 
 Vue.use(require('vue-moment'));
 Vue.config.productionTip = false
 Vue.use(BootstrapVue);
+Vue.use(vueDebounce);
 
 const routes = [{
   path: '/',

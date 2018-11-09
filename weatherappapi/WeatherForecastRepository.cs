@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 using weatherappapi.models;
 
 namespace weatherappapi {
-    public class WeatherForecastRepository :IWeatherForecastRepository {
+    public class WeatherForecastRepository : IWeatherForecastRepository {
         private readonly AppSettings appSettings;
         public WeatherForecastRepository (IOptions<AppSettings> appSettings) {
             this.appSettings = appSettings.Value;

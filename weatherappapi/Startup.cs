@@ -44,6 +44,7 @@ namespace weatherappapi
             });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
+            services.AddSingleton<ILocationsRepository, LocationsRepository>();
             services.Configure<AppSettings>(Configuration);
         }
 
