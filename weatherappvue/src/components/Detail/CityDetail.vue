@@ -36,16 +36,18 @@ export default {
         })
         .catch(e => {
           app.loading--;
-          console.log(e);
+          window.console.log(e);
         });
       HTTP.get("/weather/current?city=" + app.city.city + ",de")
         .then(response => {
           app.currentTemp = response.data;
           app.loading--;
+
+          this.$emit('weather-data-fetched', response.data);
         })
         .catch(e => {
           app.loading--;
-          console.log(e);
+          window.console.log(e);
         });
     }
   },

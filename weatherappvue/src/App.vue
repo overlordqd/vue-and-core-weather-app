@@ -20,13 +20,13 @@
     <div class="row" v-show="selectedCity">
        <div class="col-sm-4"></div>
       <div class="col-sm-4 col-sm-offset-4">
-        <CityDetail v-bind:city="selectedCity"></CityDetail>
+        <CityDetail v-bind:city="selectedCity" @weather-data-fetched="persistCurrentWeather"></CityDetail>
       </div>
     </div>
-    <div class="row" v-show="searchHistory">
+    <div class="row" v-show="searchHistory && searchHistory.length">
        <div class="col-sm-4"></div>
       <div class="col-sm-4 col-sm-offset-4">
-        <HistoryComponent v-bind:searchHistory="this.searchHistory"></HistoryComponent>
+        <HistoryComponent v-bind:searchHistory="this.searchHistory" @clear-history-requested="clearHistory"></HistoryComponent>
       </div>
     </div>
   </div>
@@ -59,21 +59,25 @@ export default {
     }
   },
   methods: {
-    saveToHistory() {
+    persistCurrentWeather(currentWeatherData) {
+      if(!this.searchHistory || !this.searchHistory.some(i => { return i.city.city === this.selectedCity.city; })){
+        this.searchHistory.push({ city: this.selectedCity, weather: currentWeatherData, lastAccessed: new Date().toISOString() }); 
+      }
+      else {
+        var persistedDataIndex = this.searchHistory.findIndex(i => { return i.city.city == this.selectedCity.city; });
+        this.searchHistory[persistedDataIndex].weather = currentWeatherData;
+        this.searchHistory[persistedDataIndex].lastAccessed = new Date().toISOString();
+      }
+
       const parsed = JSON.stringify(this.searchHistory);
       localStorage.setItem("search-history", parsed);
     },
+    clearHistory(){
+      this.searchHistory = [];
+      localStorage.removeItem("search-history");
+    },
     selectCity(city) {
       this.selectedCity = city;
-      if (
-        !this.searchHistory ||
-        !this.searchHistory.some(i => {
-          return i.city == city.city;
-        })
-      ) {
-        this.searchHistory.push(city);
-        this.saveToHistory();
-      }
     },
     setCurrentInput(input) {
       this.searchInput = input;
@@ -90,7 +94,7 @@ export default {
         .catch(e => {
           window.console.log(e);
         });
-    }
+    },
   },
   computed: {
     isInputPostalCode() {

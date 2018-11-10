@@ -7,8 +7,9 @@ import router from 'vue-router'
 import vueDebounce from 'vue-debounce'
 import "./filters/unique";
 import "./filters/celsius";
+import moment from 'vue-moment';
 
-Vue.use(require('vue-moment'));
+Vue.use(moment);
 Vue.config.productionTip = false
 Vue.use(BootstrapVue);
 Vue.use(vueDebounce);
