@@ -17,7 +17,7 @@ export default {
   },
   watch: {
     searchInput: function(newVal) {
-      this.input = newVal.city;
+      this.input = newVal.name;
     }
   },
   data: function() {

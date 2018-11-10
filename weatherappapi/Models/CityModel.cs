@@ -7,7 +7,7 @@ using Newtonsoft.Json.Converters;
 namespace weatherappapi.models {
     public class CityModel
     {
-        [JsonProperty("city")]
+        [JsonProperty("name")]
         public string City{ get; set; }   
         [JsonProperty("zip")]
         public string ZipCode {get;set;}

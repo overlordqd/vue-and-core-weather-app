@@ -2,22 +2,21 @@
     <div>
         <h3>Your recent searches</h3>
         <ul>
-            <li v-for="c in searchHistory" v-bind:key="c.id">
-                <a v-bind:title="'Last accessed: ' + ($options.filters.moment(c.lastAccessed, ' DD-MM-YYYY HH:mm'))">
-                    {{ c.city.city }}, {{ c.weather.tempC }}
-                </a>
-            </li>
+            <history-item v-for="record in searchHistory" :key="record.city.name" :item="record"></history-item>
         </ul>
-        <button @click="clearHistory">Clear history</button>
+        <b-button @click="clearHistory">Clear history</b-button>
     </div>
 </template>
 
 <script>
 // eslint-disable-next-line
-import moment from "moment";
+import moment from 'moment';
+import HistoryItem from './HistoryItem'
+
 export default {
     name: "HistoryComponent",
     props: ['searchHistory'],
+    components: { HistoryItem },
     methods: {
         clearHistory(){
             this.$emit('clear-history-requested');

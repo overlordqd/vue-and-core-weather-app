@@ -1,6 +1,6 @@
 <template>
     <div v-show="this.loading < 2">
-        <h4>Current weather for <span v-text="city.city"></span></h4>
+        <h4>Current weather for <span v-text="city.name"></span></h4>
         <label for="currentTemp">Current temperature: </label>
         <p>{{currentTemp.tempC | celsius}}</p>
 
@@ -19,8 +19,8 @@
 import { HTTP } from "../../http-common";
 
 export default {
-  name: "CityDetail",
-  props: ["city"],
+  name: 'WeatherInfo',
+  props: ['city'],
   watch: {
     city() {
       var app = this;
@@ -29,7 +29,7 @@ export default {
         return;
       }
       app.loading = 2;
-      HTTP.get("/weather/forecast?city=" + app.city.city + ",de")
+      HTTP.get('/weather/forecast?city=' + app.city.name + ',de')
         .then(response => {
           app.forecast = response.data;
           app.loading--;
@@ -38,7 +38,7 @@ export default {
           app.loading--;
           window.console.log(e);
         });
-      HTTP.get("/weather/current?city=" + app.city.city + ",de")
+      HTTP.get("/weather/current?city=" + app.city.name + ",de")
         .then(response => {
           app.currentTemp = response.data;
           app.loading--;
