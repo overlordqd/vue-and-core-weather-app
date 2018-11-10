@@ -24,7 +24,7 @@ export default {
     },
     computed: {
         lastAccessed(){
-            return 'Last accessed: ' + (moment(this.item.lastAccessed).format('DD-MM-YYYY HH:mm:ss'));
+            return `Last accessed: ${moment(this.item.lastAccessed).format('DD-MM-YYYY HH:mm:ss')}`;
         }
     }
 };

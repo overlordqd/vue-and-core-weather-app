@@ -40,12 +40,14 @@ namespace weatherappapi {
             return Task.FromResult( 
                     from c in CityList
                     where (isPostalCode && (c.Value<string>("zip")?.StartsWith(input) ?? false))
-                    || (c.Value<string>("city")?.StartsWith(input, true, CultureInfo.InvariantCulture) ?? false)
+                        || (c.Value<string>("city")?.StartsWith(input, true, CultureInfo.InvariantCulture) ?? false)
                     group c by c.Value<string>("city") into cG 
                     select new CityModel{
                       City = cG.Key,
                       ZipCode = cG.FirstOrDefault().Value<string>("zip"),
-                      Id = cG.FirstOrDefault().Value<string>("id")
+                      Id = cG.FirstOrDefault().Value<string>("id"),
+                      Lat = cG.FirstOrDefault().Value<string>("lat"),
+                      Lon = cG.FirstOrDefault().Value<string>("lon"),
                     });
         }
     }

@@ -1,23 +1,31 @@
 <template>
  <div class="form-group">
-      <label for="city" weather-icon="1">Enter the city name you desire, or the zip code...</label>
-      <input id="city" class="form-control" type="text" v-model="input" v-debounce:250="inputChanged">
+      <label for="city">Enter the city name you desire, or the zip code...</label>
+      <input id="city" class="form-control" type="text" :value="search" 
+        @keydown="keydown" v-debounce:250="inputChanged">
     </div>
 </template>
 
 <script>
 export default {
   name: "SearchComponent",
-  props: ["searchInput"],
-    methods: {
+  props: { searchInput: String },
+  methods: {
     inputChanged: function(newVal)
     {
       this.$emit('input', newVal);
+    },
+    keydown: function(event)
+    {
+      if(event.keyCode != 8)
+        return;
+
+      this.$emit('backspace');
     }
   },
-  watch: {
-    searchInput: function(newVal) {
-      this.input = newVal.name;
+  computed: {
+    search: function() {
+      return this.searchInput;
     }
   },
   data: function() {
@@ -25,6 +33,3 @@ export default {
   }
 };
 </script>
-
-<style>
-</style>

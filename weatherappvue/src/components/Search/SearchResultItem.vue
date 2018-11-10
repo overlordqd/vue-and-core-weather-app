@@ -8,20 +8,12 @@
 
 <script>
 export default {
-  name: "SearchResultItem",
-  props: {
-    city: {}
-  },
+  name: 'SearchResultItem',
+  props: { city: Object },
   methods: {
     selectCity: function(city) {
       this.$emit('city-selected', city);
-    },
-    inputChanged: function(newVal){
-      this.$emit('input', newVal);
     }
   }
 };
 </script>
-
-<style>
-</style>

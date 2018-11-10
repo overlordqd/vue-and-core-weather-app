@@ -37,13 +37,13 @@ namespace weatherappapi.Controllers {
 
             return  Ok(result.Response.FirstOrDefault ().Periods.Select (s => new {
                 s.DateTimeIso,
-                    s.MaxHumidity,
-                    s.MaxTempC,
-                    s.MinHumidity,
-                    s.MinTempC,
-                    s.Weather,
-                    s.WindSpeedMaxKph,
-                    s.WindSpeedMinKph
+                s.MaxHumidity,
+                s.MaxTempC,
+                s.MinHumidity,
+                s.MinTempC,
+                s.Weather,
+                s.WindSpeedMaxKph,
+                s.WindSpeedMinKph
             }));
         }
     }

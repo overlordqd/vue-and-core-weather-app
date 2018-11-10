@@ -13,5 +13,9 @@ namespace weatherappapi.models {
         public string ZipCode {get;set;}
         [JsonProperty("id")]
         public string Id {get;set;}
+        [JsonProperty("lat")]
+        public string Lat {get;set;}
+        [JsonProperty("lon")]
+        public string Lon {get;set;}
     }
 }
