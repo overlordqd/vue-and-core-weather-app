@@ -1,7 +1,6 @@
 <template>
     <div v-show="this.loading < 2">
         <h4>Current weather for <span v-text="city.name"></span></h4>
-        <label for="currentTemp">Current temperature: </label>
         <p>{{currentTemp.tempC | celsius}}</p>
 
         <forecast-list v-if="forecastData && forecastData.length" v-bind:forecast="forecastData"></forecast-list>        

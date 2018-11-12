@@ -1,10 +1,12 @@
 <template>
     <div>
-        <h3>Your recent searches</h3>
-        <ul>
-            <history-item v-for="record in searchHistory" :key="record.city.name" :item="record"></history-item>
-        </ul>
-        <b-button @click="clearHistory">Clear history</b-button>
+        <h4>Your recent searches</h4>
+        <div>
+            <ul class="list-group list-group-flush">
+                <history-item v-for="record in searchHistory" :key="record.city.name" :item="record"></history-item>
+            </ul>
+            <button type="button" class="btn btn-primary btn-block" @click="clearHistory">Clear history</button>
+        </div>
     </div>
 </template>
 

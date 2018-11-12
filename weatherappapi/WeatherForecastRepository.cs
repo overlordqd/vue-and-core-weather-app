@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
@@ -30,7 +31,8 @@ namespace weatherappapi {
                     appSettings.AerisWeather.Queries.Forecast;
                 requestUrl = requestUrl.Replace ("{client_id}", appSettings.AerisWeather.ClientId)
                     .Replace ("{client_secret}", appSettings.AerisWeather.ClientSecret)
-                    .Replace ("{location}", cityName);
+                    .Replace ("{location}", cityName)
+                    .Replace ("{from}", DateTime.Today.AddDays(1).ToString("yyyy-MM-dd"));
 
                 var response = await httpClient.GetAsync (requestUrl);
 

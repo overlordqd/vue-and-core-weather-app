@@ -1,6 +1,9 @@
 <template>
-  <li>
-      {{item.dateTimeIso | moment("dddd, MMMM Do YYYY")}} {{item.maxTempC | celsius}} / {{item.minTempC | celsius}}
+  <li class="list-group-item">
+    <span>
+      {{item.dateTimeIso | moment("dddd, MMM Do")}}
+    </span>
+    <span>{{item.maxTempC | celsius}} / {{item.minTempC | celsius}}</span>
   </li>
 </template>
 
