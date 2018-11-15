@@ -10,10 +10,3 @@ export default {
   components: { HomeComponent }
 };
 </script>
-
-<style>
-footer {
-    position: fixed;
-    bottom: 0;
-}
-</style>

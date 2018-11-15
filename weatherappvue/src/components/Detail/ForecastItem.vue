@@ -13,6 +13,3 @@ export default {
   props: { item: Object }
 };
 </script>
-
-<style>
-</style>

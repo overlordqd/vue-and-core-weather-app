@@ -8,13 +8,13 @@
     </div>
     <div class="row" v-show="selectedCity">
       <div class="col-sm-12 col-md-6 offset-md-3 col-lg-6 lg-offset-3">
-        <weather-overview v-bind:city="selectedCity" @weather-data-fetched="persistCurrentWeather"></weather-overview>
+        <weather-overview :city="selectedCity" @weather-data-fetched="persistCurrentWeather"></weather-overview>
       </div>
     </div>
     <!-- <footer class="fixed-bottom"> -->
       <div class="row" v-show="searchHistory && searchHistory.length">
         <div class="col-sm-12 col-md-6 offset-md-3 col-lg-6 lg-offset-3">
-          <history-component :limit="2" v-bind:searchHistory="this.searchHistory" @clear-history-requested="clearHistory"></history-component>
+          <history-component :limit="2" @clear-history-requested="clearHistory"></history-component>
         </div>
       </div>
     <!-- </footer> -->
