@@ -33,7 +33,7 @@ export default {
         clearHistory(){
             this.$emit('clear-history-requested');
         },
-        toggle: function(i){
+        toggle: function(){
             this.toggleIndex = (this.toggleIndex + 1) % this.toggleData.length;
         },
         lastAccessed(){

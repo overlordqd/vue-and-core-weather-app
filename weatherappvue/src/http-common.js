@@ -8,7 +8,7 @@ HTTP.interceptors.response.use((response) => {
   return response;
 }, function (error) {
   if (error.response.status === 400) {
-      window.console.log(error.response.data);
+    window.console.log(error.response.data);
   }
   return Promise.reject(error.response);
 });

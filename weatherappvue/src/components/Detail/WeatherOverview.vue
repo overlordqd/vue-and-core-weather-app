@@ -19,7 +19,7 @@ export default {
     getForecast: function(){
       var app = this;
 
-      HTTP.get('/weather/forecast?city=' + app.city.name + ',de')
+      HTTP.get(`/weather/forecast?city=${app.city.name},de`)
         .then(response => {
           app.forecastData = response.data;
           app.loading--;
@@ -32,7 +32,7 @@ export default {
     getCurrentWeather: function(){
       var app = this;
       
-      HTTP.get("/weather/current?city=" + app.city.name + ",de")
+      HTTP.get(`/weather/current?city=${app.city.name},de`)
         .then(response => {
           app.currentTemp = response.data;
           app.loading--;
