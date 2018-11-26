@@ -2,7 +2,9 @@
   <div class="history">
     <div class="row" v-show="this.searchHistory && this.searchHistory.length">
         <div class="col-sm-12 col-md-6 offset-md-3 col-lg-6 lg-offset-3">
-            <history-component @clear-history-requested="clearHistory"></history-component>
+          <history-component @clear-history-requested="clearHistory">
+            <h3 slot="title" class="mt-3">Search history</h3>
+          </history-component>
         </div>
     </div>
   </div>

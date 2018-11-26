@@ -22,12 +22,7 @@ namespace weatherappapi.Controllers {
         public async Task<ActionResult> GetCurrent (string city) {
             var result = await weatherForecastRepository.GetCurrentWeather (city);
 
-            return Ok (new {
-                result.Response.Ob.Humidity,
-                    result.Response.Ob.TempC,
-                    result.Response.Ob.Weather,
-                    result.Response.Ob.WindSpeedKph
-            });
+            return Ok(result);
         }
 
         // GET api/weather/forecast?city={city}
@@ -35,16 +30,7 @@ namespace weatherappapi.Controllers {
         public async Task<ActionResult> GetForecast (string city) {
             var result = await weatherForecastRepository.GetWeatherForecast (city);
 
-            return  Ok(result.Response.FirstOrDefault ().Periods.Select (s => new {
-                s.DateTimeIso,
-                s.MaxHumidity,
-                s.MaxTempC,
-                s.MinHumidity,
-                s.MinTempC,
-                s.Weather,
-                s.WindSpeedMaxKph,
-                s.WindSpeedMinKph
-            }));
+            return Ok(result);
         }
     }
 }

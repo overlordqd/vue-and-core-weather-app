@@ -21,7 +21,7 @@ export default {
         return {
             toggleIndex: 0,
             toggleData: [this.item.city.name,
-                        `Temp: ${this.$options.filters.celsius(this.item.weather.tempC)}`, 
+                        `Temp: ${this.$options.filters.celsius(this.item.weather.temperature)}`, 
                         `Humidity: ${this.item.weather.humidity}%`,
                         this.lastAccessed()]
         }

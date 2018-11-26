@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using weatherappapi.mapping;
 using weatherappapi.models;
 
 namespace weatherappapi
@@ -36,12 +38,23 @@ namespace weatherappapi
             services.AddCors(options =>
             {
                 options.AddPolicy("corspolicy",
-                builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod()
-                .AllowCredentials());
+                    builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials());
             });
+
+            var mappingConfig = new MapperConfiguration(mc => {
+                mc.AddProfile(new CityModelMappingProfile());
+                mc.AddProfile(new CurrentWeatherMappingProfile());
+                mc.AddProfile(new WeatherForecastMappingProfile());
+            });
+
+            IMapper mapper = mappingConfig.CreateMapper();
+            
+            services.AddSingleton(mapper);
+            // services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
             services.AddSingleton<ILocationsRepository, LocationsRepository>();

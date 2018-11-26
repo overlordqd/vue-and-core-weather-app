@@ -1,7 +1,7 @@
 import Vue from 'vue';
 
 Vue.filter('celsius', function(value) {
-    if (!value) 
-      return "";
-    return value.toString() + " °C";
+    if (!value && value != 0) 
+      return '';
+    return `${value} °C`;
   });

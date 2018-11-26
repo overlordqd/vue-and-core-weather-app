@@ -8,7 +8,7 @@ namespace weatherappapi.models {
     public class CityModel
     {
         [JsonProperty("name")]
-        public string City{ get; set; }   
+        public string Name{ get; set; }   
         [JsonProperty("zip")]
         public string ZipCode {get;set;}
         [JsonProperty("id")]

@@ -9,29 +9,20 @@ namespace weatherappapi.models {
         [JsonProperty ("AllowedHosts")]
         public string AllowedHosts { get; set; }
 
+        public APIConfiguration CitiesAPI {get;set; }
+
         [JsonProperty ("AerisWeather")]
         public AerisWeather AerisWeather { get; set; }
     }
 
-    public struct AerisWeather {
-        [JsonProperty ("ApiAddress")]
-        public Uri ApiAddress { get; set; }
-
-        [JsonProperty ("ClientId")]
-        public string ClientId { get; set; }
-
-        [JsonProperty ("ClientSecret")]
-        public string ClientSecret { get; set; }
-
-        [JsonProperty ("Queries")]
-        public Queries Queries { get; set; }
+    public class APIConfiguration
+    {
+        public Uri APIAddress {get;set;}
+        public Dictionary<string, string> Queries {get; set;}
     }
 
-    public struct Queries {
-        [JsonProperty ("Forecast")]
-        public string Forecast { get; set; }
-
-        [JsonProperty ("Current")]
-        public string Current { get; set; }
+    public class AerisWeather : APIConfiguration {
+        public string ClientId { get; set; }
+        public string ClientSecret { get; set; }
     }
 }

@@ -10,26 +10,33 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using weatherappapi.models;
 using System.Globalization;
+using AutoMapper;
 
 namespace weatherappapi {
     public class LocationsRepository : ILocationsRepository {
         private readonly AppSettings appSettings;
+        private readonly IMapper mapper;
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly string contentRootPath;
-        private JArray _cityList;
-        public LocationsRepository (IOptions<AppSettings> appSettings, IHostingEnvironment hostingEnvironment) {
+        private IEnumerable<CityModel> _cityList;
+        public LocationsRepository (IOptions<AppSettings> appSettings, 
+            IHostingEnvironment hostingEnvironment,
+            IMapper mapper) {
             this.appSettings = appSettings.Value;
             this.hostingEnvironment = hostingEnvironment;
+            this.mapper = mapper;
             contentRootPath = hostingEnvironment.ContentRootPath;
         }
 
-        private JArray CityList {
-            get{
+        private IEnumerable<CityModel> CityList {
+            get {
                 if(_cityList != null)
                     return _cityList;
 
-                var citiesContent =  File.ReadAllText(Path.Combine(contentRootPath, @"data\cities.json"));
-                return _cityList =  JObject.Parse(citiesContent).Value<JArray>("cities");
+                var fileContent =  File.ReadAllText(Path.Combine(contentRootPath, @"data\cities.json"));
+                var citiesArray =  JObject.Parse(fileContent).Value<JArray>("cities");
+                
+                return _cityList = mapper.Map<List<CityModel>>(citiesArray);
             }
         }
 
@@ -39,16 +46,10 @@ namespace weatherappapi {
 
             return Task.FromResult( 
                     from c in CityList
-                    where (isPostalCode && (c.Value<string>("zip")?.StartsWith(input) ?? false))
-                        || (c.Value<string>("city")?.StartsWith(input, true, CultureInfo.InvariantCulture) ?? false)
-                    group c by c.Value<string>("city") into cG 
-                    select new CityModel{
-                      City = cG.Key,
-                      ZipCode = cG.FirstOrDefault().Value<string>("zip"),
-                      Id = cG.FirstOrDefault().Value<string>("id"),
-                      Lat = cG.FirstOrDefault().Value<string>("lat"),
-                      Lon = cG.FirstOrDefault().Value<string>("lon"),
-                    });
+                    where (isPostalCode && (c.ZipCode?.StartsWith(input) ?? false))
+                        || (c.Name?.StartsWith(input, true, CultureInfo.InvariantCulture) ?? false)
+                    group c by c.Name into cG 
+                    select cG.FirstOrDefault());
         }
     }
 }

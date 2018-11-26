@@ -1,11 +1,13 @@
 <template>
     <div>
-        <h4>Your recent searches</h4>
+        <slot name="title">
+            <h5 class="mt-3">Recent queries</h5>
+        </slot>
         <div>
             <ul class="list-group list-group-flush">
                 <history-item v-for="record in limitedSearchHistory" :key="record.city.name" :item="record"></history-item>
             </ul>
-            <button type="button" class="btn btn-primary btn-block" @click="clearHistory">Clear history</button>
+            <button v-if="!this.limit" type="button" class="btn btn-primary btn-block mt-4" @click="clearHistory">Clear history</button>
         </div>
     </div>
 </template>
