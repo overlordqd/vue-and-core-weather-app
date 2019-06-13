@@ -1,13 +1,8 @@
-﻿using System.Web.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using weatherappapi.models;
-using System.Net.Http;
 
-namespace weatherappapi.Controllers {
+namespace weatherappapi.Controllers
+{
     [Route ("api/[controller]")]
     [ApiController]
     public class WeatherController : ControllerBase {

@@ -1,11 +1,10 @@
-
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using Newtonsoft.Json.Linq;
-using weatherappapi.models;
-using System.Linq;
 
-namespace weatherappapi.mapping {
+namespace weatherappapi.mapping
+{
     public class JTokenToListConverter<T> : ITypeConverter<JToken, List<T>> where T : new()
     {
         public List<T> Convert(JToken source, List<T> destination, ResolutionContext context)

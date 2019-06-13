@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
-namespace weatherappapi.models {
+namespace weatherappapi.models
+{
     public class AppSettings {
         [JsonProperty ("AllowedHosts")]
         public string AllowedHosts { get; set; }

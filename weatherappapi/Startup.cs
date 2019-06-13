@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using weatherappapi.mapping;
 using weatherappapi.models;
 
@@ -56,8 +48,9 @@ namespace weatherappapi
             services.AddSingleton(mapper);
             // services.AddAutoMapper();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddSingleton<IWeatherForecastRepository, WeatherForecastRepository>();
-            services.AddSingleton<ILocationsRepository, LocationsRepository>();
+            services.AddTransient<IWeatherForecastRepository, WeatherForecastRepository>();
+            services.AddTransient<ILocationsRepository, LocationsRepository>();
+            services.AddSingleton<IAppSettingsWrapper, AppSettingsWrapper>();
             services.Configure<AppSettings>(Configuration);
         }
 

@@ -1,41 +1,49 @@
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using weatherappapi.models;
-using System.Globalization;
-using AutoMapper;
+using weatherappapi.Repositories;
 
-namespace weatherappapi {
-    public class LocationsRepository : ILocationsRepository {
-        private readonly AppSettings appSettings;
-        private readonly IMapper mapper;
+namespace weatherappapi
+{
+    public class LocationsRepository : RepositoryBase, ILocationsRepository
+    {
         private readonly IHostingEnvironment hostingEnvironment;
         private readonly string contentRootPath;
         private IEnumerable<CityModel> _cityList;
-        public LocationsRepository (IOptions<AppSettings> appSettings, 
+
+        public LocationsRepository(IAppSettingsWrapper appSettingsWrapper,
             IHostingEnvironment hostingEnvironment,
-            IMapper mapper) {
-            this.appSettings = appSettings.Value;
+            IMapper mapper) : base(mapper, appSettingsWrapper)
+        {
             this.hostingEnvironment = hostingEnvironment;
-            this.mapper = mapper;
             contentRootPath = hostingEnvironment.ContentRootPath;
         }
 
-        private IEnumerable<CityModel> CityList {
-            get {
-                if(_cityList != null)
+        private IEnumerable<CityModel> CityList
+        {
+            get
+            {
+                if (_cityList != null)
                     return _cityList;
 
-                var fileContent =  File.ReadAllText(Path.Combine(contentRootPath, @"data\cities.json"));
-                var citiesArray =  JObject.Parse(fileContent).Value<JArray>("cities");
-                
+                var citiesJsonFilePath = Path.Combine(contentRootPath, @"data\cities.json");
+
+                if (!File.Exists(citiesJsonFilePath))
+                {
+                    throw new Exception($"Can't find the cities json file in the specified directory: {citiesJsonFilePath}");
+                }
+
+                var fileContent = File.ReadAllText(citiesJsonFilePath);
+                var citiesArray = JObject.Parse(fileContent).Value<JArray>("cities");
+
                 return _cityList = mapper.Map<List<CityModel>>(citiesArray);
             }
         }
@@ -44,11 +52,11 @@ namespace weatherappapi {
         {
             var isPostalCode = Regex.IsMatch(input, @"^\d+$");
 
-            return Task.FromResult( 
+            return Task.FromResult(
                     from c in CityList
                     where (isPostalCode && (c.ZipCode?.StartsWith(input) ?? false))
                         || (c.Name?.StartsWith(input, true, CultureInfo.InvariantCulture) ?? false)
-                    group c by c.Name into cG 
+                    group c by c.Name into cG
                     select cG.FirstOrDefault());
         }
     }

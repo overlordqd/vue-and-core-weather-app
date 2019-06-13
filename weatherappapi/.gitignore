@@ -11,5 +11,6 @@
 *.sw*
 
 /obj
-/bin
+/bin/*
 /wwwroot/lib
+/.vs

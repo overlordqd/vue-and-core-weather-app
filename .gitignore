@@ -1,2 +1,5 @@
 weatherappapi/obj/
 weatherappapi/bin/
+weatherappapi.tests/bin/
+weatherappapi.tests/obj/
+.vs/
