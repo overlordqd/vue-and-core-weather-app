@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Options;
+using weatherappapi.ApiClients;
 using weatherappapi.models;
 using weatherappapi.Repositories;
 

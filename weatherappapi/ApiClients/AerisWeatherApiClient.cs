@@ -2,10 +2,10 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using weatherappapi.ApiClients;
 using weatherappapi.models;
+using weatherappapi.Repositories;
 
-namespace weatherappapi.Repositories
+namespace weatherappapi.ApiClients
 {
     public class AerisWeatherApiClient : WeatherApiClientBase, IWeatherApiClient
     {

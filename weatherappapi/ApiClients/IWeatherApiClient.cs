@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace weatherappapi.Repositories
+namespace weatherappapi.ApiClients
 {
     public interface IWeatherApiClient
     {

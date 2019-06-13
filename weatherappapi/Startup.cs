@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using weatherappapi.ApiClients;
 using weatherappapi.mapping;
 using weatherappapi.models;
 
@@ -51,6 +52,7 @@ namespace weatherappapi
             services.AddTransient<IWeatherForecastRepository, WeatherForecastRepository>();
             services.AddTransient<ILocationsRepository, LocationsRepository>();
             services.AddSingleton<IAppSettingsWrapper, AppSettingsWrapper>();
+            services.AddTransient<IWeatherApiClient, AerisWeatherApiClient>();
             services.Configure<AppSettings>(Configuration);
         }
 
