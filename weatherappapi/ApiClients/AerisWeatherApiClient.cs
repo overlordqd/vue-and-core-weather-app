@@ -10,23 +10,21 @@ namespace weatherappapi.ApiClients
     public class AerisWeatherApiClient : WeatherApiClientBase, IWeatherApiClient
     {
         private readonly AppSettings appSettings;
+        private readonly WeatherApiCallFactory weatherApiCallFactory;
 
-        public AerisWeatherApiClient(IAppSettingsWrapper appSettingsWrapper)
+        public AerisWeatherApiClient(IAppSettingsWrapper appSettingsWrapper, WeatherApiCallFactory weatherApiCallFactory)
         {
             appSettings = appSettingsWrapper.AppSettings;
+            this.weatherApiCallFactory = weatherApiCallFactory;
         }
 
         private string ConstructRequestUrl(string weatherCallType, string cityName)
         {
-            if (!new[] { Types.Current, Types.Forecast }.Contains(weatherCallType))
-            {
-                throw new Exception($"Not known weather call: {weatherCallType}");
-            }
+            ValidateRequest(weatherCallType);
 
-            return appSettings.AerisWeather.APIAddress + appSettings.AerisWeather.Queries[weatherCallType]
-                    .Replace("{client_id}", appSettings.AerisWeather.ClientId)
-                    .Replace("{client_secret}", appSettings.AerisWeather.ClientSecret)
-                    .Replace("{location}", cityName);
+            weatherApiCallFactory.
+
+
         }
 
         public async Task<string> GetWeather(string cityName, string callType)
