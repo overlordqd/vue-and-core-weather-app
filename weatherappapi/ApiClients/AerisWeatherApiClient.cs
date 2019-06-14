@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using weatherappapi.ApiCalls;
 using weatherappapi.models;
 using weatherappapi.Repositories;
 
@@ -10,9 +11,9 @@ namespace weatherappapi.ApiClients
     public class AerisWeatherApiClient : WeatherApiClientBase, IWeatherApiClient
     {
         private readonly AppSettings appSettings;
-        private readonly WeatherApiCallFactory weatherApiCallFactory;
+        private readonly IWeatherApiCallFactory weatherApiCallFactory;
 
-        public AerisWeatherApiClient(IAppSettingsWrapper appSettingsWrapper, WeatherApiCallFactory weatherApiCallFactory)
+        public AerisWeatherApiClient(IAppSettingsWrapper appSettingsWrapper, IWeatherApiCallFactory weatherApiCallFactory)
         {
             appSettings = appSettingsWrapper.AppSettings;
             this.weatherApiCallFactory = weatherApiCallFactory;
@@ -22,9 +23,9 @@ namespace weatherappapi.ApiClients
         {
             ValidateRequest(weatherCallType);
 
-            weatherApiCallFactory.
+            var apiCall = weatherApiCallFactory.GetRequestedApiCall(weatherCallType);
 
-
+            return apiCall.ConstructApiCallUri(cityName);
         }
 
         public async Task<string> GetWeather(string cityName, string callType)

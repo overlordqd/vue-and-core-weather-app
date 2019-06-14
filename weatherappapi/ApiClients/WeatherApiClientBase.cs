@@ -1,4 +1,7 @@
-﻿namespace weatherappapi.ApiClients
+﻿using System;
+using System.Linq;
+
+namespace weatherappapi.ApiClients
 {
     public abstract class WeatherApiClientBase
     {
@@ -8,7 +11,7 @@
             public const string Forecast = "Forecast";
         }
 
-        protected ValidateRequest(string weatherCallType)
+        protected void ValidateRequest(string weatherCallType)
         {
           if (!new[] { Types.Current, Types.Forecast }.Contains(weatherCallType))
           {

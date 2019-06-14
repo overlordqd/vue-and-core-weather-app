@@ -13,8 +13,8 @@ namespace weatherappapi.Controllers
         }
 
         // GET api/locations/getcities?input={city}
-        [HttpGet ("getcities")]
-        public async Task<ActionResult> GetCities (string input) {
+        [HttpGet ("cities")]
+        public async Task<ActionResult> Get (string input) {
             if(input?.Length < 2)
                 return BadRequest("Input too generic");
 

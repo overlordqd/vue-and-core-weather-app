@@ -15,8 +15,7 @@ namespace weatherappapi.Controllers
         // GET api/weather/current?city={city}
         [HttpGet ("current")]
         public async Task<ActionResult> GetCurrent (string city) {
-            var result = await weatherForecastRepository.GetCurrentWeather (city);
-
+            var result = await weatherForecastRepository.GetCurrentWeather(city);
             return Ok(result);
         }
 

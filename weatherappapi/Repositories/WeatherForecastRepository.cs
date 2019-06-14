@@ -21,13 +21,18 @@ namespace weatherappapi
 
         public async Task<CurrentWeatherModel> GetCurrentWeather(string cityName)
         {
-            var weather = await weatherApiClient.GetWeather(cityName, ApiClients.WeatherApiClientBase.Types.Current);
-
-            return await StreamHelper.DeserializeJsonFrom<CurrentWeatherModel>(mapper, weather);
+            try {
+                var weather = await weatherApiClient.GetWeather(cityName, ApiClients.WeatherApiClientBase.Types.Current);
+                return await StreamHelper.DeserializeJsonFrom<CurrentWeatherModel>(mapper, weather);
+            }
+            catch {
+                return null;
+            }            
         }
 
         public async Task<List<WeatherForecastModel>> GetWeatherForecast(string cityName)
         {
+            ///todo: replace with the new approach
             var requestUrl = AppSettings.AerisWeather.APIAddress + AppSettings.AerisWeather.Queries["Forecast"];
             requestUrl = requestUrl.Replace("{client_id}", AppSettings.AerisWeather.ClientId)
                 .Replace("{client_secret}", AppSettings.AerisWeather.ClientSecret)
