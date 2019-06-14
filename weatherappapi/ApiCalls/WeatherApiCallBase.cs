@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace weatherappapi.ApiCalls
 {
     public abstract class WeatherApiCallBase
@@ -10,12 +12,19 @@ namespace weatherappapi.ApiCalls
             this.weatherCallType = weatherCallType;
         }
 
-        protected virtual string ConstructRequestUrl()
+        protected virtual string ConstructRequestUrl(params KeyValuePair<string, string>[] extraParameters)
         {
-            return appSettingsWrapper.AppSettings.AerisWeather.APIAddress 
+            var url = appSettingsWrapper.AppSettings.AerisWeather.APIAddress 
             + appSettingsWrapper.AppSettings.AerisWeather.Queries[weatherCallType]
                     .Replace("{client_id}", appSettingsWrapper.AppSettings.AerisWeather.ClientId)
                     .Replace("{client_secret}", appSettingsWrapper.AppSettings.AerisWeather.ClientSecret);
+
+            foreach(var parameter in extraParameters)
+            {
+                url = url.Replace($"{{{parameter.Key}}}", parameter.Value);
+            }
+
+            return url;
         }
     }
 }

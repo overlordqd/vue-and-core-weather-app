@@ -3,15 +3,15 @@ using weatherappapi.ApiClients;
 
 namespace weatherappapi.ApiCalls
 {
-    public class CurrentWeatherApiCall : WeatherApiCallBase, IWeatherApiCall
+    public class ForecastWeatherApiCall : WeatherApiCallBase, IWeatherApiCall
     {
-        public CurrentWeatherApiCall(IAppSettingsWrapper appSettingsWrapper)
-        : base(appSettingsWrapper, WeatherApiClientBase.Types.Current){
+        public ForecastWeatherApiCall(IAppSettingsWrapper appSettingsWrapper)
+        : base(appSettingsWrapper, WeatherApiClientBase.Types.Forecast){
         }
 
         public string ConstructApiCallUri(string locationName, params KeyValuePair<string, string>[] extraParameters)
         {
-            return this.ConstructRequestUrl()
+            return this.ConstructRequestUrl(extraParameters)
              .Replace("{location}", locationName);
         }
     }

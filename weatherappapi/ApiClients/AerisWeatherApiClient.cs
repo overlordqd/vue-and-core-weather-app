@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,20 +20,20 @@ namespace weatherappapi.ApiClients
             this.weatherApiCallFactory = weatherApiCallFactory;
         }
 
-        private string ConstructRequestUrl(string weatherCallType, string cityName)
+        private string ConstructRequestUrl(string weatherCallType, string cityName, params KeyValuePair<string,string>[] extraParameters)
         {
             ValidateRequest(weatherCallType);
 
             var apiCall = weatherApiCallFactory.GetRequestedApiCall(weatherCallType);
 
-            return apiCall.ConstructApiCallUri(cityName);
+            return apiCall.ConstructApiCallUri(cityName, extraParameters);
         }
 
-        public async Task<string> GetWeather(string cityName, string callType)
+        public async Task<string> GetWeather(string cityName, string callType, params KeyValuePair<string,string>[] extraParameters)
         {
             using (var client = new HttpClient())
             {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, ConstructRequestUrl(callType, cityName)))
+                using (var request = new HttpRequestMessage(HttpMethod.Get, ConstructRequestUrl(callType, cityName, extraParameters)))
                 using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
                 {
                     var stream = await response.Content.ReadAsStreamAsync();

@@ -6,6 +6,6 @@ namespace weatherappapi
 {
     public interface IWeatherForecastRepository {
         Task<CurrentWeatherModel> GetCurrentWeather (string city);
-        Task<List<WeatherForecastModel>> GetWeatherForecast (string city);
+        Task<List<WeatherForecastModel>> GetWeatherForecast (string city, int days);
     }
 }

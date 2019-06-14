@@ -21,8 +21,8 @@ namespace weatherappapi.Controllers
 
         // GET api/weather/forecast?city={city}
         [HttpGet ("forecast")]
-        public async Task<ActionResult> GetForecast (string city) {
-            var result = await weatherForecastRepository.GetWeatherForecast (city);
+        public async Task<ActionResult> GetForecast (string city, int days = 5) {
+            var result = await weatherForecastRepository.GetWeatherForecast (city, days);
 
             return Ok(result);
         }

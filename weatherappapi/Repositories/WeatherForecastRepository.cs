@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.Extensions.Options;
 using weatherappapi.ApiClients;
 using weatherappapi.models;
 using weatherappapi.Repositories;
@@ -30,29 +27,16 @@ namespace weatherappapi
             }            
         }
 
-        public async Task<List<WeatherForecastModel>> GetWeatherForecast(string cityName)
+        public async Task<List<WeatherForecastModel>> GetWeatherForecast(string city, int days)
         {
-            ///todo: replace with the new approach
-            var requestUrl = AppSettings.AerisWeather.APIAddress + AppSettings.AerisWeather.Queries["Forecast"];
-            requestUrl = requestUrl.Replace("{client_id}", AppSettings.AerisWeather.ClientId)
-                .Replace("{client_secret}", AppSettings.AerisWeather.ClientSecret)
-                .Replace("{location}", cityName)
-                .Replace("{from}", DateTime.Today.AddDays(1).ToString("yyyy-MM-dd"));
-
-            using (var client = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, requestUrl))
-                using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
-                {
-                    var stream = await response.Content.ReadAsStreamAsync();
-                    if (response.IsSuccessStatusCode)
-                        return await StreamHelper.DeserializeJsonFrom<List<WeatherForecastModel>>(mapper, stream, ".response[0].periods");
-
-                    var content = await StreamHelper.StreamToStringAsync(stream);
-
-                    throw new Exception(content);
-                }
+            try {
+                var weather = await weatherApiClient.GetWeather(city, ApiClients.WeatherApiClientBase.Types.Forecast, 
+                    new KeyValuePair<string, string>("from", days.ToString()));
+                return await StreamHelper.DeserializeJsonFrom<List<WeatherForecastModel>>(mapper, weather, ".response[0].periods");
             }
+            catch {
+                return null;
+            } 
         }
     }
 }
