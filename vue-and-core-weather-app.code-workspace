@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "weatherappapi"
+		},
+		{
+			"path": "weatherappapi.tests"
 		}
 	]
 }

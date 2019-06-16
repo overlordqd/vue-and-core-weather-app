@@ -38,7 +38,7 @@ export default {
     },
     getCities: function(){
       var app = this;
-      HTTP.get(`/locations/getcities?input=${this.searchInput}`)
+      HTTP.get(`/locations/cities?input=${this.searchInput}`)
         .then(response => {
           app.cities = response.data;
         })
