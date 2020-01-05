@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using weatherappapi.ApiCalls;
@@ -13,6 +12,8 @@ namespace weatherappapi.ApiClients
     {
         private readonly AppSettings appSettings;
         private readonly IWeatherApiCallFactory weatherApiCallFactory;
+
+        public IEnumerable<string> SupportedCalls => new[] { Types.Current, Types.Forecast };
 
         public AerisWeatherApiClient(IAppSettingsWrapper appSettingsWrapper, IWeatherApiCallFactory weatherApiCallFactory)
         {
@@ -31,20 +32,16 @@ namespace weatherappapi.ApiClients
 
         public async Task<string> GetWeather(string cityName, string callType, params KeyValuePair<string,string>[] extraParameters)
         {
-            using (var client = new HttpClient())
-            {
-                using (var request = new HttpRequestMessage(HttpMethod.Get, ConstructRequestUrl(callType, cityName, extraParameters)))
-                using (var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead))
-                {
-                    var stream = await response.Content.ReadAsStreamAsync();
-                    var content = await StreamHelper.StreamToStringAsync(stream);
+            using var client = new HttpClient();
+            using var request = new HttpRequestMessage(HttpMethod.Get, ConstructRequestUrl(callType, cityName, extraParameters));
+            using var response = await client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead);
+            var stream = await response.Content.ReadAsStreamAsync();
+            var content = await StreamHelper.StreamToStringAsync(stream);
 
-                    if (response.IsSuccessStatusCode)
-                        return content;
+            if (response.IsSuccessStatusCode)
+                return content;
 
-                    throw new Exception(content);
-                }
-            }
+            throw new Exception(content);
         }
     }
 }

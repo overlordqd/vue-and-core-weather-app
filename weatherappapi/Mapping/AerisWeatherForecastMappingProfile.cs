@@ -4,8 +4,8 @@ using Newtonsoft.Json.Linq;
 using weatherappapi.models;
 
 namespace weatherappapi.mapping {
-    public class WeatherForecastMappingProfile : Profile {
-        public WeatherForecastMappingProfile() {
+    public class AerisWeatherForecastMappingProfile : Profile {
+        public AerisWeatherForecastMappingProfile() {
             CreateMap<JToken, List<WeatherForecastModel>>().ConvertUsing<JTokenToListConverter<WeatherForecastModel>>();
             CreateMap<JToken, WeatherForecastModel>()
             .ForMember(x => x.HumidityMin, y => y.MapFrom(j => j.SelectToken(".minHumidity")))

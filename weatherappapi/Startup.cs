@@ -9,17 +9,18 @@ using weatherappapi.ApiClients;
 using weatherappapi.mapping;
 using weatherappapi.models;
 using weatherappapi.ApiCalls;
+using Microsoft.Extensions.Hosting;
 
 namespace weatherappapi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration, IHostingEnvironment env)
+        public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
             .SetBasePath(env.ContentRootPath)
-            .AddJsonFile("appsettings.json", optional:false, reloadOnChange:false)
-            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional:true)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+            .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
             .AddEnvironmentVariables();
             configuration = builder.Build();
             Configuration = configuration;
@@ -36,36 +37,36 @@ namespace weatherappapi
                     builder => builder
                     .AllowAnyOrigin()
                     .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials());
+                    .AllowAnyMethod());
             });
 
-            var mappingConfig = new MapperConfiguration(mc => {
+            var mappingConfig = new MapperConfiguration(mc =>
+            {
                 mc.AddProfile(new CityModelMappingProfile());
                 mc.AddProfile(new CurrentWeatherMappingProfile());
-                mc.AddProfile(new WeatherForecastMappingProfile());
+                mc.AddProfile(new AerisWeatherForecastMappingProfile());
             });
 
             IMapper mapper = mappingConfig.CreateMapper();
 
             services.AddSingleton(mapper);
-            // services.AddAutoMapper();
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            //services.AddAutoMapper();
+            services.AddMvc(a => a.EnableEndpointRouting = false);
             services.AddTransient<IWeatherForecastRepository, WeatherForecastRepository>();
             services.AddTransient<ILocationsRepository, LocationsRepository>();
             services.AddSingleton<IAppSettingsWrapper, AppSettingsWrapper>();
             services.AddSingleton<IWeatherApiCallFactory, WeatherApiCallFactory>();
-            services.AddTransient<IWeatherApiClient, AerisWeatherApiClient>();
+            services.AddTransient<IWeatherApiClient, AccuWeatherApiClient>();
             services.Configure<AppSettings>(Configuration);
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v0.1", new Info { Title = "WeatherApp API", Version = "v0.1" });
+                c.SwaggerDoc("v0.1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "WeatherApp API", Version = "v0.1" });
             });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {

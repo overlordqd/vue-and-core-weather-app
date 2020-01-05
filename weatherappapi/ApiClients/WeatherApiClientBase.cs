@@ -9,14 +9,18 @@ namespace weatherappapi.ApiClients
         {
             public const string Current = "Current";
             public const string Forecast = "Forecast";
+            public const string LocationKey = "LocationKey";
         }
 
         protected void ValidateRequest(string weatherCallType)
         {
-          if (!new[] { Types.Current, Types.Forecast }.Contains(weatherCallType))
-          {
-              throw new Exception($"Not known weather call: {weatherCallType}");
-          }
+            if (this is IWeatherApiClient weatherApiClient)
+            {
+                if (!weatherApiClient.SupportedCalls.Contains(weatherCallType))
+                {
+                    throw new Exception($" {weatherApiClient.GetType()} - not known weather call: {weatherCallType}");
+                }
+            }
         }
     }
 }

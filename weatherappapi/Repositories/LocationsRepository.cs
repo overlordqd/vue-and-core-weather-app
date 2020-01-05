@@ -1,3 +1,6 @@
+using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -5,9 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Hosting;
-using Newtonsoft.Json.Linq;
 using weatherappapi.models;
 using weatherappapi.Repositories;
 
@@ -15,12 +15,12 @@ namespace weatherappapi
 {
     public class LocationsRepository : RepositoryBase, ILocationsRepository
     {
-        private readonly IHostingEnvironment hostingEnvironment;
+        private readonly IWebHostEnvironment hostingEnvironment;
         private readonly string contentRootPath;
         private IEnumerable<CityModel> _cityList;
 
         public LocationsRepository(IAppSettingsWrapper appSettingsWrapper,
-            IHostingEnvironment hostingEnvironment,
+            IWebHostEnvironment hostingEnvironment,
             IMapper mapper) : base(mapper, appSettingsWrapper)
         {
             this.hostingEnvironment = hostingEnvironment;
